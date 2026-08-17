@@ -1,0 +1,10 @@
+# Project Automation Orchestrator - Python Dependencies
+
+# Core dependencies
+click>=8.1.0          # CLI framework
+pyyaml>=6.0           # YAML configuration
+
+# Optional: For enhanced features
+# colorama>=0.4.6     # Colored terminal output
+# rich>=13.0.0        # Rich terminal formatting
+# python-dotenv>=1.0.0  # Environment variable management

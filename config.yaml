@@ -1,0 +1,63 @@
+# Project Automation Orchestrator Configuration
+
+workspace:
+  root: ./workspace
+  agents_dir: ./agents
+  state_db: ./workspace/.state.db
+
+orchestrator:
+  max_retries: 2
+  timeout_seconds: 3600
+
+logging:
+  level: INFO
+  file: ./workspace/orchestrator.log
+
+# Agent-specific settings
+agents:
+  architecture:
+    policy: ./agents/policies/architecture.policy.md
+
+  task_planner:
+    policy: ./agents/policies/task-planning.policy.md
+
+  setup_implementation:
+    policy: ./agents/policies/setup-implementation.policy.md
+
+  testing:
+    policy: ./agents/policies/testing.policy.md
+    max_retry_attempts: 2
+    test_timeout: 600      # 10 minutes for test execution
+    fix_timeout: 300       # 5 minutes for fix execution
+    smart_retry: true      # Skip retry if identical error detected
+
+  documentation:
+    policy: ./agents/policies/documentation.policy.md
+
+# GitHub Integration - Auto-commit after each task completion
+# After each task is implemented, tested, and documented, the code will be automatically committed
+github:
+  enabled: false              # Set to true to enable git commits after each task
+  auto_commit: false          # Set to true to also push to remote repository (requires repository_url)
+  repository_url: ""          # GitHub repository URL (e.g., https://github.com/user/repo.git)
+                              # Required for auto_commit. Use SSH (git@github.com:user/repo.git) or HTTPS
+  branch: "main"              # Branch to commit/push to
+  commit_message_prefix: "[AI-Generated]"  # Prefix for commit messages (e.g., "[AI-Generated] Task 001: ...")
+  git_user_name: "AI Agent Orchestrator"    # Git user.name for commits (change if needed)
+  git_user_email: "ai-agent@workflow.local"  # Git user.email for commits (change if needed)
+
+# Example configurations:
+#
+# 1. Local commits only (no push):
+#    enabled: true
+#    auto_commit: false
+#
+# 2. Auto-commit and push to GitHub:
+#    enabled: true
+#    auto_commit: true
+#    repository_url: "https://github.com/yourusername/yourrepo.git"
+#    git_user_name: "Your Name"
+#    git_user_email: "your.email@example.com"
+#
+# 3. Disabled (no git operations):
+#    enabled: false
